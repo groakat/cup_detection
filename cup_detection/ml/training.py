@@ -23,11 +23,16 @@ def get_video_annoation_pair(folder):
     return vap
 
 
-def get_annotated_frames_w_numbers(vap):
+def get_annotated_frames_w_numbers(vap, cls_str):
+    """
+    :param vap:
+    :param cls_str: "cup" or "card_board"
+    :return:
+    """
     anno = A.Annotation()
     anno.loadFromFile(vap["anno_file"])
 
-    filtered_anno = anno.getFramesWithBehaviour("cup")
+    filtered_anno = anno.getFramesWithBehaviour(cls_str)
 
     return {"frame-numbers": A.getFramesFromFrameAnno(filtered_anno),
             "filtered-anno": filtered_anno}

@@ -16,7 +16,7 @@ from ..features import cup as FC
 
 
 def extract_features_from_video_annotation_pair(vap):
-    d = T.get_annotated_frames_w_numbers(vap)
+    d = T.get_annotated_frames_w_numbers(vap, "cup")
     frame_numbers = list(d['frame-numbers'])
     bboxs = np.asarray(d['filtered-anno'])[:, :4]
 
@@ -111,7 +111,7 @@ def predict_cup_center(frame, classifier):
 
 
 def cup_predictions(vap, classifier):
-    d = T.get_annotated_frames_w_numbers(vap)
+    d = T.get_annotated_frames_w_numbers(vap, "cup")
     frame_numbers = list(d['frame-numbers'])
     bboxs = np.asarray(d['filtered-anno'])[:, :4]
 
@@ -159,4 +159,8 @@ def cup_predictions_from_folder(folder, annotated_video_list, out_folder, classi
         df.to_csv(os.path.join(out_folder, "{}_cup_locs.csv".format(i)))
 
 
-
+def extract_and_save_features(annotated_video_list, out_folder):
+    for i in range(len(annotated_video_list)):
+        fld = get_features_from_annotation_list([annotated_video_list[i]])[0]
+        filename = os.path.join(out_folder, str(i) + "_{}.npy")
+        T.save_features_labels_dict(fld, filename)
