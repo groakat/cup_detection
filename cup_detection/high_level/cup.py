@@ -1,6 +1,6 @@
-from ..ml import cup as MLC
-from ..ml import training as T
-from ..ml import dataset_curration as DC
+from cup_detection.ml import cup as MLC
+from cup_detection.ml import training as T
+from cup_detection.ml import dataset_curration as DC
 
 import os
 
@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     DC.select_neg_features_from_datasets('/Volumes/Seagate Backup Plus Drive/datasets/cups/script_output/cup_features_glob_raw_all_test/',
                                          '/Volumes/Seagate Backup Plus Drive/datasets/cups/script_output/cup_features_glob_raw_sel_test/')
-
+    #
 
     folder = '/Volumes/Seagate Backup Plus Drive/datasets/cups/script_output/cup_features_glob_raw_sel/'
     ys = T.cross_validation(folder)

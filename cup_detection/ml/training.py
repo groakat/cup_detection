@@ -1,28 +1,13 @@
 from __future__ import division
 
-import skimage.io as skio
-import skimage.segmentation as skis
-import skimage.transform as skit
-import skimage.color as skic
-import skimage.future as skif
-import skimage.morphology as skim
-import skimage.measure as skime
-
-
 import sklearn.ensemble as skle
 import sklearn.metrics as sklm
-
-from scipy import ndimage
+from sklearn.externals import joblib
 import numpy as np
-
-import pandas as pd
 
 import os
 
 import pyTools.videoProc.annotation as A
-import pyTools.system.videoExplorer as VE
-
-import pylab as plt
 
 
 def get_video_annoation_pair(folder):
@@ -139,6 +124,21 @@ def train_random_forest_w_split(folder, training_ids):
     rfc = train_random_forest_from_file_list(fld_filelist['train'])
 
     return rfc
+
+
+def train_random_forest_from_folder(folder):
+    training_ids = list(range(len(features_labels_dicts_in_folder(folder))))
+    rfc = train_random_forest_w_split(folder, training_ids)
+
+    return rfc
+
+
+def save_classifier(clf, filename):
+    joblib.dump(clf, filename)
+
+
+def load_classifier(filename):
+    return joblib.load(filename)
 
 
 def test_random_forest_w_split(folder, training_ids, rfc):
