@@ -164,3 +164,32 @@ def extract_and_save_features(annotated_video_list, out_folder):
         fld = get_features_from_annotation_list([annotated_video_list[i]])[0]
         filename = os.path.join(out_folder, str(i) + "_{}.npy")
         T.save_features_labels_dict(fld, filename)
+
+
+def cup_predictions_outside_cardboard(video_filename, clfr, card_board_frames):
+    selected_frames = 1 - card_board_frames
+
+    ve = VE.videoExplorer()
+    ve.setVideoStream(video_filename, frameMode='RGB')
+
+    data = []
+
+
+    for i, frame in enumerate(ve):
+        if i % 100 == 0:
+            print i
+
+        if selected_frames[i] == 0:
+            continue
+
+        ccp = predict_cup_center(frame, clfr)
+
+        confidences = ccp["confidences"]
+        centroids = ccp["centroids"]
+        cc = ccp["winner"]
+
+        data += [[i, cc[1], cc[0]]]
+
+    df = pd.DataFrame(data=data, columns=["Frame", "cup x", "cup y"])
+
+    return df

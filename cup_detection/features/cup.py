@@ -103,6 +103,7 @@ def extract_histogram_features(frame, bins=10):
               [-107.863, 94.482]]
 
     lab_img = skic.rgb2lab(frame.reshape(-1, 1, 3))
+
     H, edges = np.histogramdd(lab_img.reshape(-1, 3), bins=bins,
                                                       range=ranges)
 

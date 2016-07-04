@@ -146,6 +146,13 @@ def load_classifier(filename):
     return joblib.load(filename)
 
 
+def load_all_classifiers(base_folder):
+    cb_filename = os.path.join(base_folder, "cardboard", "cardboard.pkl")
+    c_filename = os.path.join(base_folder, "cups", "cups.pkl")
+    return {"card-board": load_classifier(cb_filename),
+            "cups": load_classifier(c_filename)}
+
+
 def test_random_forest_w_split(folder, training_ids, rfc):
     fld_filelist = train_test_split(folder, training_ids)
     fld = load_and_concatenate_features_labels_dict(fld_filelist['test'])

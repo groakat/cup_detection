@@ -32,9 +32,26 @@ def extract_features_from_video_annotation_pair(vap):
 
 def apply_smoothing(y):
     out = copy.copy(y)
-    out['predict'] = scis.medfilt(y['predict'], 51)
+    out = scis.medfilt(y, 51)
 
     return out
+
+
+def get_card_board_frames_from_video(filename, clfr):
+    ve = VE.videoExplorer()
+    ve.setVideoStream(filename, frameMode='RGB')
+
+    ys = []
+
+    for i, frame in enumerate(ve):
+        feats = FC.extract_histogram_features(frame)
+        ys += [clfr.predict(feats.reshape(1, -1))]
+
+    ys = np.concatenate(ys)
+    y_smooth = apply_smoothing(ys)
+
+    return {"raw": ys,
+            "smooth": y_smooth}
 
 
 def get_features_from_annotation_list(annotated_video_list):

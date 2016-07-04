@@ -125,11 +125,7 @@ def save_current_figure(filename):
     plt.savefig(filename, bbox_inches="tight", pad_inches = 0)
 
 
-
-def tracking_on_video(video_filename, et_filename, cl_filename, out_folder):
-    et_df = load_eye_tracker_data(et_filename)
-    cl_df = load_cup_location_data(cl_filename)
-
+def tracking_on_video(video_filename, et_df, cl_df, out_folder):
     ve = VE.videoExplorer()
     ve.setVideoStream(video_filename, frameMode='RGB')
 
@@ -152,3 +148,10 @@ def tracking_on_video(video_filename, et_filename, cl_filename, out_folder):
         plot_tracker_target(frame, el, cl, tracker_current=tracker_current)
         save_current_figure(os.path.join(out_folder, "frame_{:04d}.png".format(i)))
         plt.close('all')
+
+
+def tracking_on_video_from_files(video_filename, et_filename, cl_filename, out_folder):
+    et_df = load_eye_tracker_data(et_filename)
+    cl_df = load_cup_location_data(cl_filename)
+
+    tracking_on_video(video_filename, et_df, cl_df, out_folder)

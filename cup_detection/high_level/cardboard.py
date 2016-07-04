@@ -1,6 +1,5 @@
 from cup_detection.ml import cardboard as MLCB
 from cup_detection.ml import training as T
-from cup_detection.ml import dataset_curration as DC
 
 
 if __name__ == "__main__":
