@@ -166,7 +166,7 @@ def extract_and_save_features(annotated_video_list, out_folder):
         T.save_features_labels_dict(fld, filename)
 
 
-def cup_predictions_outside_cardboard(video_filename, clfr, card_board_frames):
+def cup_predictions_outside_cardboard(video_filename, clfr, card_board_frames, verbose=False):
     selected_frames = 1 - card_board_frames
 
     ve = VE.videoExplorer()
@@ -176,8 +176,9 @@ def cup_predictions_outside_cardboard(video_filename, clfr, card_board_frames):
 
 
     for i, frame in enumerate(ve):
-        if i % 100 == 0:
-            print i
+        if verbose:
+            if i % 100 == 0:
+                print i
 
         if selected_frames[i] == 0:
             continue
