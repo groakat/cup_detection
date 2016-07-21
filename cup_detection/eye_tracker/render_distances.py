@@ -47,15 +47,15 @@ def frames_per_minute(frame_rate):
     return frame_rate * 60
 
 
-def convert_i_to_frame_string(i, frame_rate):
-    h = int(np.floor(i / frames_per_hour(frame_rate)))
-    i -= h * frames_per_hour(frame_rate)
+def convert_i_to_frame_string(i, df_framerate, video_framerate):
+    h = int(np.floor(i / frames_per_hour(video_framerate)))
+    i -= h * frames_per_hour(video_framerate)
 
-    m = int(np.floor(i / frames_per_minute(frame_rate)))
-    i -= m * frames_per_minute(frame_rate)
+    m = int(np.floor(i / frames_per_minute(video_framerate)))
+    i -= m * frames_per_minute(video_framerate)
 
-    s = int(np.floor(i / frame_rate))
-    f = int(i - (s * frame_rate))
+    s = int(np.floor(i / video_framerate))
+    f = int((i - (s * video_framerate)) / video_framerate * df_framerate)
 
     return "{:02d}:{:02d}:{:02d}:{:02d}".format(h, m, s, f)
 
@@ -64,7 +64,8 @@ def events_at_frame_i(df, i, frame_rate=None):
     if frame_rate is None:
         frame_rate = get_frame_rate(df)
 
-    frame_string = convert_i_to_frame_string(i, frame_rate)
+    frame_string = convert_i_to_frame_string(i, df_framerate=frame_rate, 
+                                             video_framerate=30)
     return df[df["Frame"] == frame_string]
 
 
