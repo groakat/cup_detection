@@ -6,7 +6,7 @@ import pyTools.system.videoExplorer as VE
 
 import os
 
-import skimage.io as skio
+from ..io import image_reader as IR
 
 
 def load_eye_tracker_data(filename):
@@ -126,13 +126,10 @@ def save_current_figure(filename):
     plt.savefig(filename, bbox_inches="tight", pad_inches = 0)
 
 
-def tracking_on_video(video_filename, et_df, cl_df, out_folder):
-    ve = VE.videoExplorer()
-    ve.setVideoStream(video_filename, frameMode='RGB')
-
+def tracking_on_video(folder, et_df, cl_df, out_folder):
     p_el = np.array([0, 0])
 
-    for i, frame in enumerate(ve):
+    for i, frame in enumerate(IR.images_in_path(folder)):
         el = fixation_at_frame_i(et_df, i, first_entry_only=True)
         cl = get_cup_location_at_frame_i(cl_df, i)
 

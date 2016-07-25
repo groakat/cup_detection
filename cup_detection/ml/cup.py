@@ -11,6 +11,7 @@ import pyTools.system.videoExplorer as VE
 
 import training as T
 from ..features import cup as FC
+from ..io import image_reader as IR
 
 
 
@@ -166,16 +167,12 @@ def extract_and_save_features(annotated_video_list, out_folder):
         T.save_features_labels_dict(fld, filename)
 
 
-def cup_predictions_outside_cardboard(video_filename, clfr, card_board_frames, verbose=False):
+def cup_predictions_outside_cardboard(folder, clfr, card_board_frames, verbose=False):
     selected_frames = 1 - card_board_frames
-
-    ve = VE.videoExplorer()
-    ve.setVideoStream(video_filename, frameMode='RGB')
-
     data = []
 
 
-    for i, frame in enumerate(ve):
+    for i, frame in enumerate(IR.images_in_path(folder)):
         if verbose:
             if i % 100 == 0:
                 print i

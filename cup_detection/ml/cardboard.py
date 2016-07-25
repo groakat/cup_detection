@@ -1,5 +1,6 @@
 import training as T
 from ..features import cup as FC
+from ..io import image_reader as IR
 
 import pyTools.system.videoExplorer as VE
 
@@ -37,13 +38,10 @@ def apply_smoothing(y):
     return out
 
 
-def get_card_board_frames_from_video(filename, clfr):
-    ve = VE.videoExplorer()
-    ve.setVideoStream(filename, frameMode='RGB')
-
+def get_card_board_frames_from_video(folder, clfr):
     ys = []
 
-    for i, frame in enumerate(ve):
+    for i, frame in enumerate(IR.images_in_path(folder)):
         feats = FC.extract_histogram_features(frame)
         ys += [clfr.predict(feats.reshape(1, -1))]
 
