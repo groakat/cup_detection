@@ -2,11 +2,10 @@ import pandas as pd
 import numpy as np
 import pylab as plt
 
-import pyTools.system.videoExplorer as VE
-
 import os
 
 from ..io import image_reader as IR
+from ..io import image_sequence as IS
 
 
 def load_eye_tracker_data(filename):
@@ -127,6 +126,8 @@ def save_current_figure(filename):
 
 
 def tracking_on_video(folder, et_df, cl_df, out_folder):
+    IS.clear_folder(out_folder)
+
     p_el = np.array([0, 0])
 
     for i, frame in enumerate(IR.images_in_path(folder)):
@@ -144,7 +145,7 @@ def tracking_on_video(folder, et_df, cl_df, out_folder):
         fig = plt.figure(figsize=(h, w))
 
         plot_tracker_target(frame, el, cl, tracker_current=tracker_current)
-        save_current_figure(os.path.join(out_folder, "frame_{:04d}.png".format(i)))
+        save_current_figure(os.path.join(out_folder, "{:06d}.png".format(i)))
         plt.close('all')
 
 
